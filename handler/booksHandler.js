@@ -17,7 +17,7 @@ router.get("/all-books", async (req, res) => {
 
 router.post("/add-book", async (req, res) => {
     try {
-        console.log(req.body);
+        // console.log(req.body);
         const newBooks = new Book(req.body);
         const result = await newBooks.save();
         res.status(200).json({ message: "book added successfully", result })
@@ -41,8 +41,25 @@ router.delete("/delete-book/:id", async (req, res) => {
     }
 });
 
-router.patch("/update-book/:id", async (req, res) => {
-    
-})
+router.put("/update-book/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const filter = { _id: id };
+        const updatedDoc = {
+            $set: {
+                title: req.body.title,
+                author: req.body.author
+            }
+        };
+        const result = await Book.updateOne(filter, updatedDoc);
+        // console.log(result);
+        res.status(200).json({ message: "updated success",data: result });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({
+            message: "something is wrong ", error: error
+        });
+    }
+});
 
 module.exports = router;
