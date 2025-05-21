@@ -14,25 +14,32 @@ router.get("/all-books", async (req, res) => {
         res.status(500).json({ message: error })
     };
 });
+
 router.post("/add-book", async (req, res) => {
     try {
         console.log(req.body);
         const newBooks = new Book(req.body);
-       const result =  await newBooks.save();
-        res.status(200).json({message : "book added successfully", result}) 
+        const result = await newBooks.save();
+        res.status(200).json({ message: "book added successfully", result })
     } catch (error) {
-        res.status(500).json({message : "something is wrong!"})
+        res.status(500).json({ message: "something is wrong!" })
     }
-    
-})
+});
 
 router.get("/book/:id", async (req, res) => {
     
 })
 
 router.delete("/delete-book/:id", async (req, res) => {
-    
-})
+    try {
+        const id = req.params.id;
+        const filter = { _id: id };
+        const result = await Book.deleteOne(filter);
+        res.status(200).json({ message: "delete success", result: result });
+    } catch (error) {
+        res.status(500).json({ message: "something is error ", error })
+    }
+});
 
 router.patch("/update-book/:id", async (req, res) => {
     
