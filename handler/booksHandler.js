@@ -1,0 +1,35 @@
+
+const express = require("express");
+const mongoose  = require("mongoose");
+const bookSchema = require("../Schema/bookSchema");
+const router = express.Router();
+
+const Book =new mongoose.model("book", bookSchema)
+
+router.get("/all-books", async (req, res) => {
+    
+})
+router.post("/add-book", async (req, res) => {
+    try {
+        const newBooks = new Book(req.body);
+       const result =  await newBooks.save();
+        res.status(200).json({message : "book added successfully", result}) 
+    } catch (error) {
+        res.status(500).json({message : "something is wrong!"})
+    }
+    
+})
+
+router.get("/book/:id", async (req, res) => {
+    
+})
+
+router.delete("/delete-book/:id", async (req, res) => {
+    
+})
+
+router.patch("/update-book/:id", async (req, res) => {
+    
+})
+
+module.exports = router;
